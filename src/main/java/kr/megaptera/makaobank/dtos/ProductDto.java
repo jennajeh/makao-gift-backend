@@ -3,19 +3,19 @@ package kr.megaptera.makaobank.dtos;
 public class ProductDto {
     private Long id;
     private String name;
-    private Long price;
     private String maker;
+    private Long price;
     private String description;
     private String imageUrl;
 
     public ProductDto() {
     }
 
-    public ProductDto(Long id, String name, Long price, String maker, String description, String imageUrl) {
+    public ProductDto(Long id, String name, String maker, Long price, String description, String imageUrl) {
         this.id = id;
         this.name = name;
-        this.price = price;
         this.maker = maker;
+        this.price = price;
         this.description = description;
         this.imageUrl = imageUrl;
     }

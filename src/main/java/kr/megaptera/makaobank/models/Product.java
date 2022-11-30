@@ -4,6 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import kr.megaptera.makaobank.dtos.ProductDto;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 public class Product {
@@ -11,9 +15,9 @@ public class Product {
     @GeneratedValue
     Long id;
 
-    String name;
-
     Long price;
+
+    String name;
 
     String maker;
 
@@ -21,14 +25,20 @@ public class Product {
 
     String imageUrl;
 
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
     public Product() {
     }
 
-    public Product(Long id, String name, Long price, String maker, String description, String imageUrl) {
+    public Product(Long id, String name, String maker, Long price, String description, String imageUrl) {
         this.id = id;
         this.name = name;
-        this.price = price;
         this.maker = maker;
+        this.price = price;
         this.description = description;
         this.imageUrl = imageUrl;
     }
@@ -58,6 +68,6 @@ public class Product {
     }
 
     public ProductDto toDto() {
-        return new ProductDto(id, name, price, maker, description, imageUrl);
+        return new ProductDto(id, name, maker, price, description, imageUrl);
     }
 }

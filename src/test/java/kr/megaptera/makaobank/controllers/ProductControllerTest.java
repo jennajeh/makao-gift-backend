@@ -29,7 +29,7 @@ class ProductControllerTest {
     void setUp() {
         List<Product> products = List.of(
                 new Product(
-                        1L, "디올 선물", 10_000L, "디올", "로고가 예쁜 디올", "imgUrl")
+                        1L, "디올 선물", "디올", 10_000L, "로고가 예쁜 디올", "imgUrl")
         );
 
         given(productService.list()).willReturn(products);
