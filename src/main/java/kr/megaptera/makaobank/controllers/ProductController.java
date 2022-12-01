@@ -22,10 +22,9 @@ public class ProductController {
 
     @GetMapping
     public ProductsDto list() {
-        List<Product> products = productService.list();
-
-        List<ProductDto> productDtos = products.stream()
-                .map(product -> product.toDto())
+        List<ProductDto> productDtos = productService.list()
+                .stream()
+                .map(Product::toDto)
                 .collect(Collectors.toList());
 
         return new ProductsDto(productDtos);
