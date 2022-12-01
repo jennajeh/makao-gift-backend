@@ -3,13 +3,13 @@ package kr.megaptera.makaobank.dtos;
 import java.util.List;
 
 public class ProductsDto {
-    private List<ProductDto> productDto;
+    private List<ProductDto> products;
 
-    public ProductsDto(List<ProductDto> productDto) {
-        this.productDto = productDto;
+    public ProductsDto(List<ProductDto> products) {
+        this.products = products;
     }
 
-    public List<ProductDto> getProductDto() {
-        return productDto;
+    public List<ProductDto> getProducts() {
+        return products;
     }
 }
