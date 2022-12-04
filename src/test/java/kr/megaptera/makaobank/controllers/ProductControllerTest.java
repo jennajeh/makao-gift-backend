@@ -35,8 +35,7 @@ class ProductControllerTest {
     void lists() throws Exception {
         Product product = mock(Product.class);
 
-        given(getProductsService.list())
-                .willReturn(List.of(product));
+        given(getProductsService.list()).willReturn(List.of());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/products"))
                 .andExpect(status().isOk())

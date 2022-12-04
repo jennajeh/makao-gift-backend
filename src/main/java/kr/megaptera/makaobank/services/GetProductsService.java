@@ -1,7 +1,6 @@
 package kr.megaptera.makaobank.services;
 
 import kr.megaptera.makaobank.dtos.ProductDto;
-import kr.megaptera.makaobank.dtos.ProductsDto;
 import kr.megaptera.makaobank.models.Product;
 import kr.megaptera.makaobank.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,7 @@ public class GetProductsService {
         this.productRepository = productRepository;
     }
 
-    public ProductsDto list() {
+    public List<ProductDto> list() {
         List<Product> products = productRepository.findAll();
 
         List<ProductDto> productDtos =
@@ -27,6 +26,6 @@ public class GetProductsService {
                         .map((Product::toDto))
                         .collect(Collectors.toList());
 
-        return new ProductsDto(productDtos);
+        return productDtos;
     }
 }

@@ -1,7 +1,7 @@
 package kr.megaptera.makaobank.exceptions;
 
-public class ProductNotFount extends RuntimeException {
-    public ProductNotFount(Long id) {
+public class ProductNotFound extends RuntimeException {
+    public ProductNotFound(Long id) {
         super("Product not found - " + id);
     }
 }

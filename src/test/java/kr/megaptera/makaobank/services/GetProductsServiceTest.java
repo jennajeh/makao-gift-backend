@@ -27,8 +27,6 @@ class GetProductsServiceTest {
 
         given(productRepository.findAll()).willReturn(List.of(product));
 
-        List<Product> products = getProductsService.list();
-
-        assertThat(products).hasSize(1);
+        assertThat(getProductsService.list()).hasSize(1);
     }
 }
