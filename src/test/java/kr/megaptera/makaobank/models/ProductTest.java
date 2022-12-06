@@ -27,5 +27,4 @@ class ProductTest {
 
         assertThat(productDto).isEqualTo(new ProductDto(1L, "소파", "제조사", 30000L, "편안한 가구", "이미지"));
     }
-
 }

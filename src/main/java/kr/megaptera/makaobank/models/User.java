@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import kr.megaptera.makaobank.dtos.UserDto;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -74,5 +75,9 @@ public class User {
 
     public boolean authenticate(String password, PasswordEncoder passwordEncoder) {
         return passwordEncoder.matches(password, this.password);
+    }
+
+    public UserDto toUserDto() {
+        return new UserDto(id, username, amount);
     }
 }

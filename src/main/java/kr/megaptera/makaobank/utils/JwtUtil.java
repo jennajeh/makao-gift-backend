@@ -13,7 +13,6 @@ public class JwtUtil {
     }
 
     public String encode(Long id) {
-
         return JWT.create()
                 .withClaim("userId", id)
                 .sign(algorithm);

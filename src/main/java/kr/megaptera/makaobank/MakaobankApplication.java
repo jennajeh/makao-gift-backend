@@ -1,5 +1,6 @@
 package kr.megaptera.makaobank;
 
+import kr.megaptera.makaobank.interceptors.AuthenticationInterceptor;
 import kr.megaptera.makaobank.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -8,7 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
@@ -32,6 +35,11 @@ public class MakaobankApplication {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**").allowedOrigins("*");
             }
+
+            @Override
+            public void addInterceptors(InterceptorRegistry registry) {
+                registry.addInterceptor(authenticationInterceptor());
+            }
         };
     }
 
@@ -43,5 +51,10 @@ public class MakaobankApplication {
     @Bean
     public JwtUtil jwtUtil() {
         return new JwtUtil(secret);
+    }
+
+    @Bean
+    public HandlerInterceptor authenticationInterceptor() {
+        return new AuthenticationInterceptor(jwtUtil());
     }
 }
