@@ -1,5 +1,7 @@
 package kr.megaptera.makaobank.dtos;
 
+import java.util.Objects;
+
 public class ProductDto {
     private Long id;
     private String name;
@@ -42,5 +44,28 @@ public class ProductDto {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductDto(" +
+                "id:" + id + ", " +
+                "name:" + name + ", " +
+                "price:" + price + ", " +
+                "maker:" + maker + ", " +
+                "description:" + description + ", " +
+                "imageUrl:" + imageUrl + ")";
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        ProductDto otherProductDto = (ProductDto) other;
+
+        return Objects.equals(id, otherProductDto.id) &&
+                Objects.equals(name, otherProductDto.name) &&
+                Objects.equals(price, otherProductDto.price) &&
+                Objects.equals(maker, otherProductDto.maker) &&
+                Objects.equals(description, otherProductDto.description) &&
+                Objects.equals(imageUrl, otherProductDto.imageUrl);
     }
 }

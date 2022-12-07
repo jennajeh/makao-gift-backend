@@ -1,22 +1,25 @@
 package kr.megaptera.makaobank.services;
 
+import kr.megaptera.makaobank.dtos.ProductDto;
+import kr.megaptera.makaobank.exceptions.ProductNotFound;
 import kr.megaptera.makaobank.models.Product;
 import kr.megaptera.makaobank.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @Transactional
-public class ProductService {
+public class GetProductService {
     private ProductRepository productRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    public GetProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
-    public List<Product> list() {
-        return productRepository.findAll();
+    public ProductDto detail(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFound(id));
+
+        return product.toDto();
     }
 }

@@ -11,14 +11,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-class ProductServiceTest {
-    private ProductService productService;
+class GetProductsServiceTest {
+    private GetProductsService getProductsService;
     private ProductRepository productRepository;
 
     @BeforeEach
     void setUp() {
         productRepository = mock(ProductRepository.class);
-        productService = new ProductService(productRepository);
+        getProductsService = new GetProductsService(productRepository);
     }
 
     @Test
@@ -27,8 +27,6 @@ class ProductServiceTest {
 
         given(productRepository.findAll()).willReturn(List.of(product));
 
-        List<Product> products = productService.list();
-
-        assertThat(products).hasSize(1);
+        assertThat(getProductsService.list()).hasSize(1);
     }
 }

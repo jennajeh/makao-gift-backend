@@ -1,19 +1,51 @@
 package kr.megaptera.makaobank.backdoor;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/backdoor")
 @Transactional
 public class BackdoorController {
     private JdbcTemplate jdbcTemplate;
+    private PasswordEncoder passwordEncoder;
 
-    public BackdoorController(JdbcTemplate jdbcTemplate) {
+    public BackdoorController(JdbcTemplate jdbcTemplate, PasswordEncoder passwordEncoder) {
         this.jdbcTemplate = jdbcTemplate;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @GetMapping("/setup-user")
+    public String setUpUser() {
+        LocalDateTime now = LocalDateTime.now();
+
+        jdbcTemplate.execute("DELETE FROM person");
+
+        jdbcTemplate.update("INSERT INTO person(" +
+                        "  id, name, username, password," +
+                        "  amount, created_at, updated_at" +
+                        ")" +
+                        " VALUES(1, ?, ?, ?, ?, ?, ?)",
+                "전제나", "Test1", passwordEncoder.encode("Test123!"),
+                50_000, now, now
+        );
+
+        jdbcTemplate.update("INSERT INTO person(" +
+                        "  id, name, username, password," +
+                        "  amount, created_at, updated_at" +
+                        ")" +
+                        " VALUES(2, ?, ?, ?, ?, ?, ?)",
+                "강보니", "Test2", passwordEncoder.encode("Test123!"),
+                50_000, now, now
+        );
+
+        return "OK";
     }
 
     @GetMapping("/reset-products")

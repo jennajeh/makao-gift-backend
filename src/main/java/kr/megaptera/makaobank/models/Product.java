@@ -33,6 +33,10 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
+    public static Product fake() {
+        return new Product(1L, "이름", "제조사", 3000L, "설명", "이미지");
+    }
+
     public Long getId() {
         return id;
     }

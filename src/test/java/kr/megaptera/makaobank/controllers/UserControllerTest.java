@@ -1,0 +1,82 @@
+package kr.megaptera.makaobank.controllers;
+
+import kr.megaptera.makaobank.models.User;
+import kr.megaptera.makaobank.services.CreateUserService;
+import kr.megaptera.makaobank.services.GetUserService;
+import kr.megaptera.makaobank.utils.JwtUtil;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(UserController.class)
+@ActiveProfiles("test")
+class UserControllerTest {
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private GetUserService getUserService;
+
+    @MockBean
+    private CreateUserService createUserService;
+
+    @SpyBean
+    private JwtUtil jwtUtil;
+
+    private String token;
+
+    @BeforeEach
+    void setup() {
+        token = jwtUtil.encode(1L);
+    }
+
+    @Test
+    void user() throws Exception {
+        given(getUserService.detail(any())).willReturn(User.fake());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/me")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(content().string(
+                        containsString("\"amount\"")
+                ));
+    }
+
+    @Test
+    void userWithoutToken() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/me"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void signup() throws Exception {
+        given(createUserService.create(any()))
+                .willReturn(User.fake());
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{"
+                                + "\"name\":\"전제나\","
+                                + "\"username\":\"Jenna1234!\","
+                                + "\"password\":\"Asdf1234!\","
+                                + "\"passwordCheck\":\"Asdf1234!\""
+                                + "}"))
+                .andExpect(status().isCreated())
+                .andExpect(content().string(
+                        containsString("\"id\"")
+                ));
+    }
+}
