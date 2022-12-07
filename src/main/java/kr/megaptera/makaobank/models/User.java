@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import kr.megaptera.makaobank.dtos.UserCreateDto;
 import kr.megaptera.makaobank.dtos.UserDto;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -31,6 +32,11 @@ public class User {
     private static final Long INITIAL_AMOUNT = 50_000L;
 
     public User() {
+    }
+
+    public User(String username, String name) {
+        this.username = username;
+        this.name = name;
     }
 
     public User(Long id, String username, String name, String password, Long amount) {
@@ -79,5 +85,9 @@ public class User {
 
     public UserDto toUserDto() {
         return new UserDto(id, username, amount);
+    }
+
+    public UserCreateDto toCreateDto() {
+        return new UserCreateDto(id, username, name);
     }
 }

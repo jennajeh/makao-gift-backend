@@ -1,5 +1,6 @@
 package kr.megaptera.makaobank.models;
 
+import kr.megaptera.makaobank.dtos.UserCreateDto;
 import kr.megaptera.makaobank.dtos.UserDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
@@ -48,5 +49,14 @@ class UserTest {
         UserDto userDto = user.toUserDto();
 
         assertThat(userDto).isEqualTo(new UserDto(1L, "Test1", 50_000L));
+    }
+
+    @Test
+    void toCreateDto() {
+        User user = new User(1L, "Test1", "전제나", "Test123!", 50_000L);
+
+        UserCreateDto userCreateDto = user.toCreateDto();
+
+        assertThat(userCreateDto).isEqualTo(new UserCreateDto(1L, "Test1", "전제나"));
     }
 }
