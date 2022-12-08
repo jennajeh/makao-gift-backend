@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import kr.megaptera.makaobank.dtos.UserCreateDto;
 import kr.megaptera.makaobank.dtos.UserDto;
+import kr.megaptera.makaobank.exceptions.NotEnoughMoney;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "PERSON")
+@Table(name = "person")
 public class User {
     @Id
     @GeneratedValue
@@ -48,26 +49,26 @@ public class User {
     }
 
     public static User fake() {
-        return new User(1L, "Jenna1234!", "전제나", "Asdf1234!", 50_000L);
+        return new User(1L, "test1", "전제나", "Test123!", 50_000L);
     }
 
-    public Long getId() {
+    public Long id() {
         return id;
     }
 
-    public String getUsername() {
+    public String username() {
         return username;
     }
 
-    public String getName() {
+    public String name() {
         return name;
     }
 
-    public String getPassword() {
+    public String password() {
         return password;
     }
 
-    public Long getAmount() {
+    public Long amount() {
         return amount;
     }
 
@@ -89,5 +90,15 @@ public class User {
 
     public UserCreateDto toCreateDto() {
         return new UserCreateDto(id, username, name);
+    }
+
+    public void order(Product product, Integer quantity) {
+        Long totalPrice = product.price() * quantity;
+
+        if (totalPrice > this.amount) {
+            throw new NotEnoughMoney();
+        }
+
+        this.amount -= product.price() * quantity;
     }
 }

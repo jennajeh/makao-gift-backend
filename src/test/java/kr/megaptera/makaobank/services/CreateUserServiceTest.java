@@ -39,7 +39,7 @@ class CreateUserServiceTest {
         User user = createUserService.create(userRegisterDto);
 
         assertThat(user).isNotNull();
-        assertThat(user.getAmount()).isEqualTo(initialAmount);
+        assertThat(user.amount()).isEqualTo(initialAmount);
 
         verify(userRepository).save(user);
     }

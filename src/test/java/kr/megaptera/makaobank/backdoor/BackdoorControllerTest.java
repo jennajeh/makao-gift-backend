@@ -28,5 +28,4 @@ class BackdoorControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/backdoor/setup-products"))
                 .andExpect(status().isOk());
     }
-
 }

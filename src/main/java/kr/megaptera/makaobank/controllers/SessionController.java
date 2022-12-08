@@ -30,9 +30,9 @@ public class SessionController {
     public LoginResultDto login(@RequestBody LoginRequestDto loginRequestDto) {
         User user = loginService.login(loginRequestDto.getUsername(), loginRequestDto.getPassword());
 
-        String accessToken = jwtUtil.encode(user.getId());
+        String accessToken = jwtUtil.encode(user.id());
 
-        return new LoginResultDto(accessToken, user.getName(), user.getAmount());
+        return new LoginResultDto(accessToken, user.name(), user.amount());
     }
 
     @ExceptionHandler(LoginFailed.class)

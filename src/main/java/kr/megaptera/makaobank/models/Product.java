@@ -37,27 +37,27 @@ public class Product {
         return new Product(1L, "이름", "제조사", 3000L, "설명", "이미지");
     }
 
-    public Long getId() {
+    public Long id() {
         return id;
     }
 
-    public String getName() {
+    public String name() {
         return name;
     }
 
-    public Long getPrice() {
+    public Long price() {
         return price;
     }
 
-    public String getMaker() {
+    public String maker() {
         return maker;
     }
 
-    public String getDescription() {
+    public String description() {
         return description;
     }
 
-    public String getImageUrl() {
+    public String imageUrl() {
         return imageUrl;
     }
 

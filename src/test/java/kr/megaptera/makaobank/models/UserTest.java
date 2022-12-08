@@ -15,8 +15,8 @@ class UserTest {
     void creation() {
         User user = new User(1L, "Test1", "전제나", "Test123!", 50_000L);
 
-        assertThat(user.getId()).isEqualTo(1L);
-        assertThat(user.getName()).isEqualTo("전제나");
+        assertThat(user.id()).isEqualTo(1L);
+        assertThat(user.name()).isEqualTo("전제나");
     }
 
     @Test
@@ -27,7 +27,7 @@ class UserTest {
 
         user.setInitialAmount();
 
-        assertThat(user.getAmount()).isEqualTo(amount);
+        assertThat(user.amount()).isEqualTo(amount);
     }
 
     @Test
@@ -58,5 +58,22 @@ class UserTest {
         UserCreateDto userCreateDto = user.toCreateDto();
 
         assertThat(userCreateDto).isEqualTo(new UserCreateDto(1L, "Test1", "전제나"));
+    }
+
+    @Test
+    void order() {
+        User user = new User();
+
+        user.setInitialAmount();
+
+        Long initialAmount = user.amount();
+
+        Product product = Product.fake();
+
+        Integer quantity = 2;
+
+        user.order(product, quantity);
+
+        assertThat(user.amount()).isEqualTo(initialAmount - product.price() * quantity);
     }
 }

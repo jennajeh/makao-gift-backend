@@ -29,7 +29,7 @@ class LoginServiceTest {
 
     @Test
     void loginSuccess() {
-        String username = "Jenna1234!";
+        String username = "test1";
         String password = "Asdf1234!";
 
         User user = User.fake();
@@ -38,7 +38,7 @@ class LoginServiceTest {
         given(userRepository.findByUsername(username))
                 .willReturn((Optional.of(user)));
 
-        assertThat(loginService.login(username, password).getUsername())
+        assertThat(loginService.login(username, password).username())
                 .isEqualTo(username);
     }
 
@@ -52,7 +52,7 @@ class LoginServiceTest {
 
     @Test
     void loginWithWrongPassword() {
-        String username = "Jenna1234!";
+        String username = "test1!";
         String password = "Asdf1234!";
 
         User user = User.fake();
