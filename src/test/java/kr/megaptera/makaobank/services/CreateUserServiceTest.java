@@ -34,7 +34,7 @@ class CreateUserServiceTest {
         UserRegisterDto userRegisterDto = new UserRegisterDto(
                 "Test1!", "전제나", "Test123!", "Test123!");
 
-        Long initialAmount = 50_000L;
+        Long initialAmount = 5_000_000L;
 
         User user = createUserService.create(userRegisterDto);
 

@@ -29,7 +29,7 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    private static final Long INITIAL_AMOUNT = 50_000L;
+    private static final Long INITIAL_AMOUNT = 5_000_000L;
 
     public User() {
     }
