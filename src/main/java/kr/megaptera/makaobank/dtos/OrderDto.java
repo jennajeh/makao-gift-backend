@@ -9,21 +9,21 @@ public class OrderDto {
     private String receiver;
     private String address;
     private String message;
-    private ProductDto productDto;
+    private ProductDto product;
     private LocalDateTime createdAt;
 
     public OrderDto() {
     }
 
     public OrderDto(Long id, Integer quantity, Long totalPrice, String receiver,
-                    String address, String message, ProductDto productDto, LocalDateTime createdAt) {
+                    String address, String message, ProductDto product, LocalDateTime createdAt) {
         this.id = id;
         this.quantity = quantity;
         this.totalPrice = totalPrice;
         this.receiver = receiver;
         this.address = address;
         this.message = message;
-        this.productDto = productDto;
+        this.product = product;
         this.createdAt = createdAt;
     }
 
@@ -51,8 +51,8 @@ public class OrderDto {
         return message;
     }
 
-    public ProductDto getProductDto() {
-        return productDto;
+    public ProductDto getProduct() {
+        return product;
     }
 
     public LocalDateTime getCreatedAt() {

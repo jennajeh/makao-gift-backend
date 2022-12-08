@@ -1,6 +1,8 @@
 package kr.megaptera.makaobank.controllers;
 
 import kr.megaptera.makaobank.dtos.OrderDto;
+import kr.megaptera.makaobank.dtos.OrdersDto;
+import kr.megaptera.makaobank.dtos.PageMetadataDto;
 import kr.megaptera.makaobank.dtos.ProductDto;
 import kr.megaptera.makaobank.exceptions.InvalidUser;
 import kr.megaptera.makaobank.models.Order;
@@ -20,9 +22,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(OrderController.class)
@@ -52,6 +57,26 @@ class OrderControllerTest {
         token = jwtUtil.encode(1L);
         productDto = new ProductDto(1L, "소파", "제조사", 10_000L, "편안한 소파", "imageUrl");
         orderDto = new OrderDto(1L, 1, 10_000L, "강보니", "서울시 성동구 성수동", "생일 축하해!", productDto, LocalDateTime.now());
+    }
+
+    @Test
+    void list() throws Exception {
+        Long userId = 1L;
+        Integer page = 1;
+        Integer size = 8;
+
+        given(getOrdersService.orders(userId, page, size))
+                .willReturn(new OrdersDto(List.of(orderDto), new PageMetadataDto(1)));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/orders?page=1&size=8")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(content().string(
+                        containsString("\"totalPages\"")
+                ))
+                .andExpect(content().string(
+                        containsString("\"orders\"")
+                ));
     }
 
     @Test

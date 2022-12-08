@@ -46,7 +46,7 @@ public class OrderController {
         return getOrdersService.orders(userId, page, size);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public OrderDto detail(
             @RequestAttribute Long userId, @PathVariable Long id
     ) {

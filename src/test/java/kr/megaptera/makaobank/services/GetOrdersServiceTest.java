@@ -44,7 +44,7 @@ class GetOrdersServiceTest {
         OrdersDto ordersDto = getOrdersService.orders(userId, page, size);
 
         assertThat(ordersDto).isNotNull();
-        assertThat(ordersDto.getOrders().get(0).getProductDto().getName())
+        assertThat(ordersDto.getOrders().get(0).getProduct().getName())
                 .isEqualTo("소파");
     }
 }
