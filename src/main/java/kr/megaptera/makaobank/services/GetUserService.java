@@ -18,7 +18,7 @@ public class GetUserService {
     public User detail(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFound(id));
-        
+
         return user;
     }
 }

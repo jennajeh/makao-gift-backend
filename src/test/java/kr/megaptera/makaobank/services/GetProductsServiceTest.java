@@ -4,10 +4,13 @@ import kr.megaptera.makaobank.models.Product;
 import kr.megaptera.makaobank.repositories.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -22,11 +25,16 @@ class GetProductsServiceTest {
     }
 
     @Test
-    void list() {
+    void getProducts() {
         Product product = mock(Product.class);
 
-        given(productRepository.findAll()).willReturn(List.of(product));
+        given(productRepository.findAll(any(Pageable.class)))
+                .willReturn(new PageImpl<>(List.of(product)));
 
-        assertThat(getProductsService.list()).hasSize(1);
+        Integer page = 1;
+        Integer size = 8;
+
+        assertThat(getProductsService.getProducts(page, size))
+                .hasSize(1);
     }
 }

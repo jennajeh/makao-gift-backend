@@ -1,13 +1,13 @@
 package kr.megaptera.makaobank.services;
 
-import kr.megaptera.makaobank.dtos.ProductDto;
 import kr.megaptera.makaobank.models.Product;
 import kr.megaptera.makaobank.repositories.ProductRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -18,14 +18,10 @@ public class GetProductsService {
         this.productRepository = productRepository;
     }
 
-    public List<ProductDto> list() {
-        List<Product> products = productRepository.findAll();
+    public Page<Product> getProducts(Integer page, Integer size) {
+        Sort sort = Sort.by("id").descending();
+        Pageable pageable = PageRequest.of(page - 1, size, sort);
 
-        List<ProductDto> productDtos =
-                products.stream()
-                        .map((Product::toDto))
-                        .collect(Collectors.toList());
-
-        return productDtos;
+        return productRepository.findAll(pageable);
     }
 }

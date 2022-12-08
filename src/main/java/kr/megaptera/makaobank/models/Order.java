@@ -16,6 +16,7 @@ public class Order {
     @Id
     @GeneratedValue
     private Long id;
+    private Long userId;
     private Long productId;
     private Integer quantity;
     private Long totalPrice;
@@ -41,10 +42,11 @@ public class Order {
         this.message = message;
     }
 
-    public Order(Long id, Long productId,
+    public Order(Long id, Long userId, Long productId,
                  Integer quantity, Long totalPrice, String receiver,
                  String address, String message) {
         this.id = id;
+        this.userId = userId;
         this.productId = productId;
         this.quantity = quantity;
         this.totalPrice = totalPrice;
@@ -54,11 +56,15 @@ public class Order {
     }
 
     public static Order fake() {
-        return new Order(1L, 1L, 1, 10_000L, "강보니", "서울시 성동구 성수동", "생일 축하해!");
+        return new Order(1L, 1L, 1L, 1, 10_000L, "강보니", "서울시 성동구 성수동", "생일 축하해!");
     }
 
     public Long id() {
         return id;
+    }
+
+    public Long userId() {
+        return userId;
     }
 
     public Long productId() {
@@ -73,6 +79,10 @@ public class Order {
         return totalPrice;
     }
 
+    public Long totalPrice(Long price) {
+        return price * quantity;
+    }
+
     public String receiver() {
         return receiver;
     }
@@ -83,6 +93,14 @@ public class Order {
 
     public String message() {
         return message;
+    }
+
+    public LocalDateTime createdAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime updatedAt() {
+        return updatedAt;
     }
 
     public OrderCreateDto toCreateDto() {

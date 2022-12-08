@@ -41,7 +41,7 @@ public class CreateOrderService {
 
         Long totalPrice = product.price() * quantity;
 
-        Order order = new Order(null, productId, quantity, totalPrice, receiver, address, message);
+        Order order = new Order(null, userId, productId, quantity, totalPrice, receiver, address, message);
 
         orderRepository.save(order);
 

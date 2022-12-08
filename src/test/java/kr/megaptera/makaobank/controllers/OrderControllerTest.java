@@ -2,8 +2,11 @@ package kr.megaptera.makaobank.controllers;
 
 import kr.megaptera.makaobank.dtos.OrderDto;
 import kr.megaptera.makaobank.dtos.ProductDto;
+import kr.megaptera.makaobank.exceptions.InvalidUser;
 import kr.megaptera.makaobank.models.Order;
 import kr.megaptera.makaobank.services.CreateOrderService;
+import kr.megaptera.makaobank.services.GetOrderService;
+import kr.megaptera.makaobank.services.GetOrdersService;
 import kr.megaptera.makaobank.utils.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,10 +21,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDateTime;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(OrderController.class)
@@ -32,6 +33,12 @@ class OrderControllerTest {
 
     @MockBean
     private CreateOrderService createOrderService;
+
+    @MockBean
+    private GetOrdersService getOrdersService;
+
+    @MockBean
+    private GetOrderService getOrderService;
 
     @SpyBean
     private JwtUtil jwtUtil;
@@ -48,7 +55,7 @@ class OrderControllerTest {
     }
 
     @Test
-    void order() throws Exception {
+    void orderSuccess() throws Exception {
         given(createOrderService.order(any(), any()))
                 .willReturn(Order.fake());
 
@@ -62,9 +69,28 @@ class OrderControllerTest {
                                 "\"address\":\"서울시 성동구 성수동\"," +
                                 "\"message\":\"생일 축하해!\"" +
                                 "}"))
-                .andExpect(status().isCreated())
-                .andExpect(content().string(
-                        containsString("\"id\"")
-                ));
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    void detail() throws Exception {
+        given(getOrderService.order(any(), any()))
+                .willReturn(orderDto);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/orders/1")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void detailWithTokenOfOtherPerson() throws Exception {
+        given(getOrderService.order(any(), any()))
+                .willThrow(InvalidUser.class);
+
+        String wrongToken = jwtUtil.encode(2L);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/orders/1")
+                        .header("Authorization", "Bearer " + wrongToken))
+                .andExpect(status().isBadRequest());
     }
 }

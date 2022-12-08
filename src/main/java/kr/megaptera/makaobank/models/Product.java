@@ -34,7 +34,7 @@ public class Product {
     }
 
     public static Product fake() {
-        return new Product(1L, "이름", "제조사", 3000L, "설명", "이미지");
+        return new Product(1L, "소파", "제조사", 3000L, "설명", "이미지");
     }
 
     public Long id() {
