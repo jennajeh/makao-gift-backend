@@ -33,7 +33,7 @@ public class BackdoorController {
                         ")" +
                         " VALUES(1, ?, ?, ?, ?, ?, ?)",
                 "전제나", "Test1", passwordEncoder.encode("Test123!"),
-                50_000, now, now
+                5_000_000, now, now
         );
 
         jdbcTemplate.update("INSERT INTO person(" +
@@ -42,7 +42,7 @@ public class BackdoorController {
                         ")" +
                         " VALUES(2, ?, ?, ?, ?, ?, ?)",
                 "강보니", "Test2", passwordEncoder.encode("Test123!"),
-                50_000, now, now
+                5_000_000, now, now
         );
 
         return "OK";

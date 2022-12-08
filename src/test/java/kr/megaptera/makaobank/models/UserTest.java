@@ -21,7 +21,7 @@ class UserTest {
 
     @Test
     void setInitialAmount() {
-        Long amount = 50_000L;
+        Long amount = 5_000_000L;
 
         User user = new User();
 
