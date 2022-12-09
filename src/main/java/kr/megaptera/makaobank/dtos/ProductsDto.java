@@ -4,18 +4,18 @@ import java.util.List;
 
 public class ProductsDto {
     private List<ProductDto> products;
-    private PageMetadataDto metadata;
+    private PagesDto pages;
 
-    public ProductsDto(List<ProductDto> products, PageMetadataDto pageMetadataDto) {
+    public ProductsDto(List<ProductDto> products, PagesDto pagesDto) {
         this.products = products;
-        this.metadata = pageMetadataDto;
+        this.pages = pagesDto;
     }
 
     public List<ProductDto> getProducts() {
         return products;
     }
 
-    public PageMetadataDto getMetadata() {
-        return metadata;
+    public PagesDto getPages() {
+        return pages;
     }
 }

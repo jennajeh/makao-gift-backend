@@ -35,9 +35,9 @@ public class User {
     public User() {
     }
 
-    public User(String username, String name) {
-        this.username = username;
+    public User(String name, String username) {
         this.name = name;
+        this.username = username;
     }
 
     public User(Long id, String username, String name, String password, Long amount) {

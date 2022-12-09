@@ -2,7 +2,7 @@ package kr.megaptera.makaobank.controllers;
 
 import kr.megaptera.makaobank.dtos.OrderDto;
 import kr.megaptera.makaobank.dtos.OrdersDto;
-import kr.megaptera.makaobank.dtos.PageMetadataDto;
+import kr.megaptera.makaobank.dtos.PagesDto;
 import kr.megaptera.makaobank.dtos.ProductDto;
 import kr.megaptera.makaobank.exceptions.InvalidUser;
 import kr.megaptera.makaobank.models.Order;
@@ -27,6 +27,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -60,13 +61,12 @@ class OrderControllerTest {
     }
 
     @Test
-    void list() throws Exception {
-        Long userId = 1L;
+    void orders() throws Exception {
         Integer page = 1;
         Integer size = 8;
 
-        given(getOrdersService.orders(userId, page, size))
-                .willReturn(new OrdersDto(List.of(orderDto), new PageMetadataDto(1)));
+        given(getOrdersService.orders(1L, page, size))
+                .willReturn(new OrdersDto(List.of(orderDto), new PagesDto(1)));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/orders?page=1&size=8")
                         .header("Authorization", "Bearer " + token))
@@ -75,8 +75,10 @@ class OrderControllerTest {
                         containsString("\"totalPages\"")
                 ))
                 .andExpect(content().string(
-                        containsString("\"orders\"")
+                        containsString("\"orders\":[")
                 ));
+
+        verify(getOrdersService).orders(1L, page, size);
     }
 
     @Test

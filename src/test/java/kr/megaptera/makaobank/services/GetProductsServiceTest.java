@@ -25,16 +25,15 @@ class GetProductsServiceTest {
     }
 
     @Test
-    void getProducts() {
+    void list() {
         Product product = mock(Product.class);
 
         given(productRepository.findAll(any(Pageable.class)))
                 .willReturn(new PageImpl<>(List.of(product)));
 
         Integer page = 1;
-        Integer size = 8;
+        Integer size = 12;
 
-        assertThat(getProductsService.getProducts(page, size))
-                .hasSize(1);
+        assertThat(getProductsService.list(page, size)).hasSize(1);
     }
 }

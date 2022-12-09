@@ -40,15 +40,16 @@ public class OrderController {
     @GetMapping
     public OrdersDto list(
             @RequestAttribute Long userId,
-            @RequestParam(defaultValue = "1", required = false) Integer page,
-            @RequestParam(defaultValue = "10", required = false) Integer size
+            @RequestParam(required = false, defaultValue = "1") Integer page,
+            @RequestParam(required = false, defaultValue = "8") Integer size
     ) {
         return getOrdersService.orders(userId, page, size);
     }
 
     @GetMapping("/{id}")
     public OrderDto detail(
-            @RequestAttribute Long userId, @PathVariable Long id
+            @RequestAttribute Long userId,
+            @PathVariable Long id
     ) {
         return getOrderService.order(userId, id);
     }

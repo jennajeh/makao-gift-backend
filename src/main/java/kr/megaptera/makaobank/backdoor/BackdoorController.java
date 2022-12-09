@@ -21,6 +21,15 @@ public class BackdoorController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @GetMapping("/reset-database")
+    public String resetDatabase() {
+        jdbcTemplate.execute("DELETE FROM person");
+        jdbcTemplate.execute("DELETE FROM product");
+        jdbcTemplate.execute("DELETE FROM orders");
+
+        return "Reset completed!";
+    }
+
     @GetMapping("/setup-user")
     public String setUpUser() {
         LocalDateTime now = LocalDateTime.now();

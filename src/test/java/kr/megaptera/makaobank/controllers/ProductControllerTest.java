@@ -19,6 +19,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -37,21 +38,22 @@ class ProductControllerTest {
     @Test
     void lists() throws Exception {
         Integer page = 1;
-        Integer size = 8;
+        Integer size = 12;
 
         Product product = mock(Product.class);
 
-        given(getProductsService.getProducts(page, size))
-                .willReturn(new PageImpl<>(List.of(product)));
+        given(getProductsService.list(page, size)).willReturn(new PageImpl<>(List.of(product)));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/products?page=1&size=8"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/products?page=1&size=12"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(
                         containsString("\"totalPages\"")
                 ))
                 .andExpect(content().string(
-                        containsString("products")
+                        containsString("\"products\":[")
                 ));
+
+        verify(getProductsService).list(page, size);
     }
 
     @Test

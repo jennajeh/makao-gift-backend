@@ -18,8 +18,9 @@ public class GetProductsService {
         this.productRepository = productRepository;
     }
 
-    public Page<Product> getProducts(Integer page, Integer size) {
-        Sort sort = Sort.by("id").descending();
+    public Page<Product> list(Integer page, Integer size) {
+        Sort sort = Sort.by("id");
+
         Pageable pageable = PageRequest.of(page - 1, size, sort);
 
         return productRepository.findAll(pageable);

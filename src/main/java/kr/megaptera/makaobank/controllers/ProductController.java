@@ -1,6 +1,6 @@
 package kr.megaptera.makaobank.controllers;
 
-import kr.megaptera.makaobank.dtos.PageMetadataDto;
+import kr.megaptera.makaobank.dtos.PagesDto;
 import kr.megaptera.makaobank.dtos.ProductDto;
 import kr.megaptera.makaobank.dtos.ProductsDto;
 import kr.megaptera.makaobank.exceptions.ProductNotFound;
@@ -33,17 +33,18 @@ public class ProductController {
 
     @GetMapping
     public ProductsDto list(
-            @RequestParam(defaultValue = "1", required = false) Integer page,
-            @RequestParam(defaultValue = "10", required = false) Integer size
+            @RequestParam(required = false, defaultValue = "1") Integer page,
+            @RequestParam(required = false, defaultValue = "12") Integer size
     ) {
-        Page<Product> products = getProductsService.getProducts(page, size);
+        Page<Product> products = getProductsService.list(page, size);
 
-        List<ProductDto> productDtos = products
-                .stream()
-                .map(Product::toDto)
+        List<ProductDto> productDtos = products.stream()
+                .map(product -> product.toDto())
                 .collect(Collectors.toList());
 
-        return new ProductsDto(productDtos, new PageMetadataDto(products.getTotalPages()));
+        PagesDto pagesDto = new PagesDto(products.getTotalPages());
+
+        return new ProductsDto(productDtos, pagesDto);
     }
 
     @GetMapping("/{id}")

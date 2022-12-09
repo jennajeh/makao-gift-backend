@@ -4,18 +4,21 @@ import java.util.List;
 
 public class OrdersDto {
     private List<OrderDto> orders;
-    private PageMetadataDto metadata;
+    private PagesDto pages;
 
-    public OrdersDto(List<OrderDto> orders, PageMetadataDto metadata) {
+    public OrdersDto() {
+    }
+
+    public OrdersDto(List<OrderDto> orders, PagesDto pages) {
         this.orders = orders;
-        this.metadata = metadata;
+        this.pages = pages;
     }
 
     public List<OrderDto> getOrders() {
         return orders;
     }
 
-    public PageMetadataDto getMetadata() {
-        return metadata;
+    public PagesDto getPages() {
+        return pages;
     }
 }
