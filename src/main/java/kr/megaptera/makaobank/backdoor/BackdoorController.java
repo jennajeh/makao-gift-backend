@@ -21,6 +21,15 @@ public class BackdoorController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @GetMapping("/reset-database")
+    public String resetDatabase() {
+        jdbcTemplate.execute("DELETE FROM person");
+        jdbcTemplate.execute("DELETE FROM product");
+        jdbcTemplate.execute("DELETE FROM orders");
+
+        return "Reset completed!";
+    }
+
     @GetMapping("/setup-user")
     public String setUpUser() {
         LocalDateTime now = LocalDateTime.now();
@@ -32,7 +41,7 @@ public class BackdoorController {
                         "  amount, created_at, updated_at" +
                         ")" +
                         " VALUES(1, ?, ?, ?, ?, ?, ?)",
-                "전제나", "Test1", passwordEncoder.encode("Test123!"),
+                "전제나", "test1", passwordEncoder.encode("Test123!"),
                 5_000_000, now, now
         );
 
@@ -41,7 +50,7 @@ public class BackdoorController {
                         "  amount, created_at, updated_at" +
                         ")" +
                         " VALUES(2, ?, ?, ?, ?, ?, ?)",
-                "강보니", "Test2", passwordEncoder.encode("Test123!"),
+                "강보니", "test2", passwordEncoder.encode("Test123!"),
                 5_000_000, now, now
         );
 
