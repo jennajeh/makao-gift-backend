@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -30,43 +31,65 @@ public class BackdoorController {
         return "Reset completed!";
     }
 
-    @GetMapping("/setup-user")
-    public String setUpUser() {
+    @GetMapping("/change-amount")
+    public String changeAmount(
+            @RequestParam Long id,
+            @RequestParam Long amount
+    ) {
+        jdbcTemplate.update("UPDATE person SET amount=? WHERE id=?", amount, id);
+
+        return "Change amount completed!";
+    }
+
+    @GetMapping("/setup-database")
+    public String setupDatabase() {
         LocalDateTime now = LocalDateTime.now();
 
         jdbcTemplate.execute("DELETE FROM person");
+        jdbcTemplate.execute("DELETE FROM product");
+        jdbcTemplate.execute("DELETE FROM orders");
 
         jdbcTemplate.update("INSERT INTO person(" +
                         "  id, name, username, password," +
-                        "  amount, created_at, updated_at" +
-                        ")" +
-                        " VALUES(1, ?, ?, ?, ?, ?, ?)",
-                "전제나", "test1", passwordEncoder.encode("Test123!"),
-                5_000_000, now, now
+                        "  amount, created_at, updated_at)" +
+                        " VALUES(1, '전제나', 'test1', ?, 5000000, ?, ?)",
+                passwordEncoder.encode("Test123!"), now, now
         );
 
-        jdbcTemplate.update("INSERT INTO person(" +
-                        "  id, name, username, password," +
-                        "  amount, created_at, updated_at" +
-                        ")" +
-                        " VALUES(2, ?, ?, ?, ?, ?, ?)",
-                "강보니", "test2", passwordEncoder.encode("Test123!"),
-                5_000_000, now, now
+        jdbcTemplate.update("INSERT INTO orders("
+                + "  id, user_id, product_id, quantity, total_price,"
+                + "  receiver, address, message, created_at, updated_at)"
+                + " VALUES(1, '1', 1, 1, 669750, '강보니', '서울시 성동구 성수동',"
+                + "'생일 축하해!', ?, ?)", now, now
         );
 
-        return "OK";
-    }
+        jdbcTemplate.update("INSERT INTO orders"
+                + "(id, user_id, product_id, quantity, total_price,"
+                + " receiver, address, message, created_at, updated_at)"
+                + " VALUES(2, '1', 11, 1, 34890, '최쥬쥬', '서울시 성동구 성수동',"
+                + "'생일 축하해!', ?, ?)", now, now
+        );
 
-    @GetMapping("/reset-products")
-    public String resetProducts() {
-        jdbcTemplate.execute("DELETE FROM product");
+        jdbcTemplate.update("INSERT INTO orders"
+                + "(id, user_id, product_id, quantity, total_price,"
+                + " receiver, address, message, created_at, updated_at)"
+                + " VALUES(3, '1', 19, 1, 24500, '최쩨쩨', '서울시 성동구 성수동',"
+                + "'생일 축하해!', ?, ?)", now, now
+        );
 
-        return "OK";
-    }
+        jdbcTemplate.update("INSERT INTO orders"
+                + "(id, user_id, product_id, quantity, total_price,"
+                + " receiver, address, message, created_at, updated_at)"
+                + " VALUES(4, '1', 40, 1, 112520, '김뚜루', '서울시 성동구 성수동',"
+                + "'생일 축하해!', ?, ?)", now, now
+        );
 
-    @GetMapping("/setup-products")
-    public String setUpProducts() {
-        jdbcTemplate.execute("DELETE FROM product");
+        jdbcTemplate.update("INSERT INTO orders"
+                + "(id, user_id, product_id, quantity, total_price,"
+                + " receiver, address, message, created_at, updated_at)"
+                + " VALUES(5, '1', 68, 1, 165000, '최홀맨', '서울시 성동구 성수동',"
+                + "'집들이 선물입니다!', ?, ?)", now, now
+        );
 
         jdbcTemplate.update("INSERT INTO product" +
                 "(id, name, maker, price, description, image_Url) " +
@@ -139,6 +162,7 @@ public class BackdoorController {
                 + "  (67,'릴렉스 접이식 안락의자 1인용','로제까사','56070','릴렉스 접이식 안락의자 1인용','https://img.danawa.com/prod_img/500000/559/220/img/6220559_1.jpg??shrink=360:360&_v=20221130213722'),\n"
                 + "  (68,'토리 흔들 의자 1인용(스툴포함)','가즈다가구','165000','토리 흔들 의자 1인용(스툴포함)','https://img.danawa.com/prod_img/500000/687/296/img/18296687_1.jpg??shrink=360:360&_v=20221130213722')\n");
 
-        return "OK";
+        return "Setup database completed!";
     }
 }
+

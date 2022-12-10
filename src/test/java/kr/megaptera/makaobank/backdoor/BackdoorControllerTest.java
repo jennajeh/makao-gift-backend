@@ -18,14 +18,20 @@ class BackdoorControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    void resetProducts() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/backdoor/reset-products"))
+    void resetDatabase() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/backdoor/reset-database"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void setUpProducts() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/backdoor/setup-products"))
+    void changeAmount() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/backdoor/change-amount?id=1&amount=4000000"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void setupDatabase() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/backdoor/setup-database"))
                 .andExpect(status().isOk());
     }
 }
